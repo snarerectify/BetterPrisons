@@ -1,0 +1,11 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/snarerectify/BetterPrisons
+build-by-default: true
+branches:
+- main
+projects:
+  BetterPrisons:
+    path: ""
+    libs:
+      - src: poggit/libasynql/libasynql
+        version: ^4.1.6
+...
