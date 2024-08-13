@@ -18,7 +18,7 @@ class DataSessionManager
 
     public function __construct()
     {
-        $this->dataConnector = libasynql::create(BetterPrisons::getBetterPrisons(), BetterPrisons::getBetterPrisons()->getConfig()->get("databaase"), [
+        $this->dataConnector = libasynql::create(BetterPrisons::getBetterPrisons(), BetterPrisons::getBetterPrisons()->getConfig()->get("database"), [
             "mysql" => "mysql.sql",
             "sqlite" => "sqlite.sql"
         ]);
