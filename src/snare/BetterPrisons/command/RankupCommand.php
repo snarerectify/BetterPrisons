@@ -9,7 +9,6 @@ use cooldogedev\BedrockEconomy\language\KnownMessages;
 use cooldogedev\BedrockEconomy\language\LanguageManager;
 use cooldogedev\BedrockEconomy\libs\_1bf65e59a1e61f74\cooldogedev\libSQL\exception\SQLException;
 use cooldogedev\BedrockEconomy\libs\_1bf65e59a1e61f74\SOFe\AwaitGenerator\Await;
-use IvanCraft623\RankSystem\rank\Rank;
 use IvanCraft623\RankSystem\RankSystem;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
