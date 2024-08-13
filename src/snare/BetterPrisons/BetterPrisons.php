@@ -25,6 +25,7 @@ class BetterPrisons extends PluginBase
 
     public function onEnable(): void
     {
+        $this->saveDefaultConfig();
         $this->dataSessionManager = new DataSessionManager();
         $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
         $this->getServer()->getCommandMap()->register("BetterPrisons", new RankupCommand());
