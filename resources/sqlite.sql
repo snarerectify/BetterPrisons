@@ -30,7 +30,7 @@ SELECT * FROM PrisonUsers WHERE name = :name;
         -- #{ set
             -- # :name string
             -- # :rank string "a"
-            -- # :prestige integer 0
+            -- # :prestige int 0
             -- # :blocksBroken int 0
 INSERT OR REPLACE INTO
 PrisonUsers(name, rank, prestige, blocksBroken)
