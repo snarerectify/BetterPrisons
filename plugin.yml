@@ -1,0 +1,20 @@
+name: BetterPrisons
+author: snare
+api: 5.3.0
+version: 1.0.0
+main: snare\BetterPrisons\BetterPrisons
+
+depend:
+  - BedrockEconomy
+
+softdepend:
+  - RankSystem
+  - MineSystem
+
+permissions:
+  betterprisons.rankup:
+    default: true
+  betterprisons.prestige:
+    default: true
+  betterprisons.bypass:
+    default: op
