@@ -45,7 +45,7 @@ class Utils
 
     /**
      * @param string $rank
-     * @return array|null
+     * @return int|null
      */
     public static function getRankupPrice(string $rank) : ?int
     {
@@ -54,7 +54,7 @@ class Utils
 
     /**
      * @param int $prestige
-     * @return array|null
+     * @return int|null
      */
     public static function getPrestigePrice(int $prestige) : ?int
     {
