@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS PrisonUsers
         -- #{ add
         -- # :name string
         -- # :rank string "a"
-        -- # :prestige integer 0
-        -- # :blocksBroken integer 0
+        -- # :prestige int 0
+        -- # :blocksBroken int 0
 INSERT OR IGNORE INTO
 PrisonUsers(name, rank, prestige, blocksBroken)
 VALUES (:name, :rank, :prestige, :blocksBroken);
@@ -30,8 +30,8 @@ SELECT * FROM PrisonUsers WHERE name = :name;
         -- #{ set
             -- # :name string
             -- # :rank string "a"
-            -- # :prestige integer 0
-            -- # :blocksBroken integer 0
+            -- # :prestige int 0
+            -- # :blocksBroken int 0
 INSERT OR REPLACE INTO
 PrisonUsers(name, rank, prestige, blocksBroken)
 VALUES (:name, :rank, :prestige, :blocksBroken);
@@ -48,14 +48,14 @@ ON DUPLICATE KEY UPDATE rank = :rank;
         -- #}
         -- #{ setPrestige
             -- # :name string
-            -- # :prestige integer
+            -- # :prestige int
 INSERT INTO PrisonUsers(name, prestige)
 VALUES(:name, :prestige)
 ON DUPLICATE KEY UPDATE prestige = :prestige;
         -- #}
         -- #{ setBlocksBroken
             -- # :name string
-            -- # :blocksBroken
+            -- # :blocksBroken int
 INSERT INTO PrisonUsers(name, prestige)
 VALUES(:name, :prestige)
 ON DUPLICATE KEY UPDATE prestige = :prestige;
