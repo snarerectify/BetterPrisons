@@ -56,9 +56,9 @@ ON DUPLICATE KEY UPDATE prestige = :prestige;
         -- #{ setBlocksBroken
             -- # :name string
             -- # :blocksBroken int
-INSERT INTO PrisonUsers(name, prestige)
-VALUES(:name, :prestige)
-ON DUPLICATE KEY UPDATE prestige = :prestige;
+INSERT INTO PrisonUsers(name, blocksBroken)
+VALUES(:name, :blocksBroken)
+ON DUPLICATE KEY UPDATE blocksBroken = :blocksBroken;
         -- #}
     -- #}
 -- #}

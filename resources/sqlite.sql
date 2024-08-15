@@ -53,12 +53,12 @@ INSERT INTO PrisonUsers(name, prestige)
 VALUES(:name, :prestige)
 ON CONFLICT(name) DO UPDATE SET prestige = :prestige;
         -- #}
-        -- #{setBlocksBroken
+        -- #{ setBlocksBroken
             -- # :name string
             -- # :blocksBroken int
-INSERT INTO PrisonUsers(name, prestige)
-VALUES(:name, :prestige)
-ON CONFLICT(name) DO UPDATE SET prestige = :prestige;
+INSERT INTO PrisonUsers(name, blocksBroken)
+VALUES(:name, :blocksBroken)
+ON CONFLICT(name) DO UPDATE SET blocksBroken = :blocksBroken;
         -- #}
     -- #}
 -- #}
