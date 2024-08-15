@@ -30,7 +30,7 @@ class DataSessionManager
 
     private function loadData() : void
     {
-        $this->dataConnector->executeSelect("data.users.getall", [], function (array $rows) : void {
+        $this->dataConnector->executeSelect("data.users.getAll", [], function (array $rows) : void {
             foreach ($rows as $row) {
                 $this->dataSessions[$row["name"]] = new DataSession($row["name"], $row["rank"], $row["prestige"], $row["blocksBroken"]);
             }
