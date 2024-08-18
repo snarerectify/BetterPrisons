@@ -70,6 +70,8 @@ class DataSessionManager
         $this->dataConnector->executeInsert("data.users.add", [
             "name" => $name
         ]);
+
+        $this->dataSessions[strtolower($name)] = new DataSession($name, "a", 0, 0);
     }
 
     public function unload() : void
