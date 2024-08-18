@@ -67,8 +67,10 @@ class DataSession
     {
         BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDatabase()->executeChange("data.users.setRank", [
             "name" => $this->name,
-            "rank" => $this->rank
+            "rank" => $rank
         ]);
+
+        $this->rank = $rank;
     }
 
     /**
@@ -80,6 +82,8 @@ class DataSession
             "name" => $this->name,
             "prestige" => $prestige
         ]);
+
+        $this->prestige = $prestige;
     }
 
     /**
@@ -91,5 +95,7 @@ class DataSession
             "name" => $this->name,
             "blocksBroken" => $blocksBroken
         ]);
+
+        $this->blocksBroken = $blocksBroken;
     }
 }

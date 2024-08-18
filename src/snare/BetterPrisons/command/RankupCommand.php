@@ -52,12 +52,13 @@ class RankupCommand extends Command implements PluginOwned
             return false;
         }
 
-        $prestige = $session->getPrestige() + 1;
+        $prestige = $session->getPrestige();
+        $reduction = $prestige === 0 ? Utils::getRankupPrice($session->getRank()) : Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") ^ $prestige);
 
         Await::f2c(
-            function () use($sender, $session, $prestige) : Generator {
+            function () use($sender, $session, $prestige, $reduction) : Generator {
                 try {
-                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), Utils::getRankupPrice($session->getRank()) * $prestige * BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier"), 1);
+                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), $reduction, 1);
                 } catch (RecordNotFoundException) {
                     BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_ACCOUNT_NONEXISTENT));
                 } catch(SQLException $exception) {
@@ -70,7 +71,7 @@ class RankupCommand extends Command implements PluginOwned
         $newRank = $session->getRank();
         $newRank++;
 
-        $sender->sendMessage(str_replace(["{PRICE}", "{RANK}"], [Utils::getRankupPrice($newRank) * $prestige * BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier"), $newRank], BetterPrisons::getBetterPrisons()->getConfig()->get("ranked-up")));
+        $sender->sendMessage(str_replace(["{PRICE}", "{RANK}"], [$reduction, $newRank], TextFormat::colorize(BetterPrisons::getBetterPrisons()->getConfig()->get("ranked-up"))));
 
         foreach (Utils::getRankupCommands($session->getRank()) as $command) {
             BetterPrisons::getBetterPrisons()->getServer()->dispatchCommand(new ConsoleCommandSender(BetterPrisons::getBetterPrisons()->getServer(), BetterPrisons::getBetterPrisons()->getServer()->getLanguage()), str_replace("{PLAYER}", $sender->getName(), $command));

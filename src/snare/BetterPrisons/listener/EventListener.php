@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace snare\BetterPrisons\listener;
 
 use IvanCraft623\RankSystem\RankSystem;
+use IvanCraft623\RankSystem\session\SessionChatFormatter;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;

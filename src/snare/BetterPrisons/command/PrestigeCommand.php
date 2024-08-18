@@ -55,7 +55,7 @@ class PrestigeCommand extends Command implements PluginOwned
         $entry = GlobalCache::ONLINE()->get($sender->getName());
 
         if($entry->amount < Utils::getPrestigePrice($session->getPrestige())) {
-            $sender->sendMessage(str_replace("{PRICE}", Utils::getPrestigePrice($session->getPrestige()), TextFormat::colorize(BetterPrisons::getBetterPrisons()->getConfig()->get("insufficient-prestige"))));
+            $sender->sendMessage(str_replace("{PRICE}", (string)Utils::getPrestigePrice($session->getPrestige()), TextFormat::colorize(BetterPrisons::getBetterPrisons()->getConfig()->get("insufficient-prestige"))));
             return false;
         }
 
