@@ -11,6 +11,9 @@ use cooldogedev\BedrockEconomy\language\KnownMessages;
 use cooldogedev\BedrockEconomy\language\LanguageManager;
 use cooldogedev\BedrockEconomy\libs\_1bf65e59a1e61f74\cooldogedev\libSQL\exception\SQLException;
 use cooldogedev\BedrockEconomy\libs\_1bf65e59a1e61f74\SOFe\AwaitGenerator\Await;
+use Ifera\ScoreHud\event\PlayerTagsUpdateEvent;
+use Ifera\ScoreHud\event\PlayerTagUpdateEvent;
+use Ifera\ScoreHud\scoreboard\ScoreTag;
 use IvanCraft623\RankSystem\RankSystem;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -52,6 +55,11 @@ class PrestigeCommand extends Command implements PluginOwned
             return false;
         }
 
+        if($session->getBlocksBroken() < Utils::getRequiredBlocksBroken($session->getPrestige())) {
+            $sender->sendMessage(str_replace(["{REQUIRED}", "{CURRENT}"], [(string)Utils::getRequiredBlocksBroken($session->getPrestige()), (string)$session->getBlocksBroken()], TextFormat::colorize(BetterPrisons::getBetterPrisons()->getConfig()->get("not-enough-blocks"))));
+            return false;
+        }
+
         $entry = GlobalCache::ONLINE()->get($sender->getName());
 
         if($entry->amount < Utils::getPrestigePrice($session->getPrestige())) {
@@ -75,7 +83,7 @@ class PrestigeCommand extends Command implements PluginOwned
         $newRank = $session->getPrestige();
         $newRank++;
 
-        $sender->sendMessage(str_replace(["{PRICE}", "{PRESTIGE}"], [Utils::getPrestigePrice($session->getPrestige()), $newRank], BetterPrisons::getBetterPrisons()->getConfig()->get("prestiged")));
+        $sender->sendMessage(str_replace(["{PRICE}", "{PRESTIGE}"], [Utils::getPrestigePrice($session->getPrestige()), $newRank], TextFormat::colorize(BetterPrisons::getBetterPrisons()->getConfig()->get("prestiged"))));
 
         foreach (Utils::getPrestigeCommands($session->getPrestige()) as $command) {
             BetterPrisons::getBetterPrisons()->getServer()->dispatchCommand(new ConsoleCommandSender(BetterPrisons::getBetterPrisons()->getServer(), BetterPrisons::getBetterPrisons()->getServer()->getLanguage()), str_replace("{PLAYER}", $sender->getName(), $command));
@@ -98,6 +106,11 @@ class PrestigeCommand extends Command implements PluginOwned
             $sender->teleport(BetterPrisons::getBetterPrisons()->getServer()->getWorldManager()->getDefaultWorld()->getSpawnLocation());
         } else {
             $sender->teleport(BetterPrisons::getBetterPrisons()->getServer()->getWorldManager()->getWorldByName(BetterPrisons::getBetterPrisons()->getConfig()->get("world-name"))->getSpawnLocation());
+        }
+
+        if(BetterPrisons::getBetterPrisons()->getServer()->getPluginManager()->getPlugin("ScoreHud") !== null) {
+            $ev = new PlayerTagsUpdateEvent($sender, [new ScoreTag("scorehudx.prisonrank", "A"), new ScoreTag("scorehudx.prisonprestige"), (string)$newRank]);
+            $ev->call();
         }
 
         return true;

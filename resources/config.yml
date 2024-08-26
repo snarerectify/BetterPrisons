@@ -146,7 +146,7 @@ ranks:
     removed-permissions: []
     commands: []
 
-# Rankup prices multiplied by this amount after each prestige
+# Rankup prices multiplied by this amount and then put to the power of the prestige you are at (0 is considered 1).
 
 prestige-multiplier: 1.25
 
@@ -165,21 +165,25 @@ max-prestige: 4
 prestiges:
   0:
     price: 12500000
+    block-requirement: 10
     added-permissions: []
     removed-permissions: []
     commands: []
   1:
     price: 15000000
+    block-requirement: 10000
     added-permissions: []
     removed-permissions: []
     commands: []
   2:
     price: 25000000
+    block-requirement: 12500
     added-permissions: []
     removed-permissions: []
     commands: []
   3:
     price: 50000000
+    block-requirement: 20000
     added-permissions: []
     removed-permissions: []
     commands: []
@@ -193,3 +197,4 @@ max-prestige-msg: "&cYou are at the maximum prestige!"
 insufficient-prestige: "&cYou require ${PRICE} to prestige!"
 must-be-z: "&cYou must be rank Z in order to prestige!"
 prestiged: "&aYou have prestiged to prestige &e{PRESTIGE} &afor &e${PRICE}&a!"
+not-enough-blocks: "&cYou have mined &e{CURRENT}/{REQUIRED} &cnumber of blocks that are required to prestige."

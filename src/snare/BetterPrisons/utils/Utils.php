@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace snare\BetterPrisons\utils;
 
-use pocketmine\world\sound\DyeUseSound;
 use snare\BetterPrisons\BetterPrisons;
 
 class Utils
@@ -113,5 +112,14 @@ class Utils
     public static function getPrestigeCommands(int $prestige) : ?array
     {
         return self::getPrestige($prestige) !== null ? self::getPrestige($prestige)["commands"] : null;
+    }
+
+    /**
+     * @param int $prestige
+     * @return int|null
+     */
+    public static function getRequiredBlocksBroken(int $prestige) : ?int
+    {
+        return self::getPrestige($prestige) !== null ? self::getPrestige($prestige)["blocks-requirement"] : null;
     }
 }

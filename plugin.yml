@@ -10,6 +10,7 @@ depend:
 softdepend:
   - RankSystem
   - MineSystem
+  - ScoreHud
 
 permissions:
   betterprisons.rankup:

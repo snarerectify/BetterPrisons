@@ -9,6 +9,8 @@ use cooldogedev\BedrockEconomy\language\KnownMessages;
 use cooldogedev\BedrockEconomy\language\LanguageManager;
 use cooldogedev\BedrockEconomy\libs\_1bf65e59a1e61f74\cooldogedev\libSQL\exception\SQLException;
 use cooldogedev\BedrockEconomy\libs\_1bf65e59a1e61f74\SOFe\AwaitGenerator\Await;
+use Ifera\ScoreHud\event\PlayerTagUpdateEvent;
+use Ifera\ScoreHud\scoreboard\ScoreTag;
 use IvanCraft623\RankSystem\RankSystem;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -88,6 +90,11 @@ class RankupCommand extends Command implements PluginOwned
         }
 
         $session->setRank($newRank);
+
+        if(BetterPrisons::getBetterPrisons()->getServer()->getPluginManager()->getPlugin("ScoreHud") !== null) {
+            $ev = new PlayerTagUpdateEvent($sender, new ScoreTag("scorehudx.prisonrank", strtoupper($newRank)));
+            $ev->call();
+        }
 
         return true;
     }
