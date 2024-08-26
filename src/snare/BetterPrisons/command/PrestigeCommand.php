@@ -92,6 +92,7 @@ class PrestigeCommand extends Command implements PluginOwned
         }
 
         $session->setPrestige($newRank);
+        $session->setRank("a");
 
         if(BetterPrisons::getBetterPrisons()->getConfig()->get("world-name") === "" || BetterPrisons::getBetterPrisons()->getServer()->getWorldManager()->getWorldByName(BetterPrisons::getBetterPrisons()->getConfig()->get("world-name")) === null) {
             $sender->teleport(BetterPrisons::getBetterPrisons()->getServer()->getWorldManager()->getDefaultWorld()->getSpawnLocation());
