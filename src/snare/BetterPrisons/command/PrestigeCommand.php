@@ -62,7 +62,7 @@ class PrestigeCommand extends Command implements PluginOwned
         Await::f2c(
             function () use($sender, $session) : Generator {
                 try {
-                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), Utils::getRankupPrice($session->getRank()), 1);
+                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), Utils::getPrestigePrice($session->getPrestige()), 1);
                 } catch (RecordNotFoundException) {
                     BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_ACCOUNT_NONEXISTENT));
                 } catch(SQLException $exception) {
@@ -75,7 +75,7 @@ class PrestigeCommand extends Command implements PluginOwned
         $newRank = $session->getPrestige();
         $newRank++;
 
-        $sender->sendMessage(str_replace(["{PRICE}", "{PRESTIGE}"], [Utils::getPrestigePrice($newRank), $newRank], BetterPrisons::getBetterPrisons()->getConfig()->get("prestiged")));
+        $sender->sendMessage(str_replace(["{PRICE}", "{PRESTIGE}"], [Utils::getPrestigePrice($session->getPrestige()), $newRank], BetterPrisons::getBetterPrisons()->getConfig()->get("prestiged")));
 
         foreach (Utils::getPrestigeCommands($session->getPrestige()) as $command) {
             BetterPrisons::getBetterPrisons()->getServer()->dispatchCommand(new ConsoleCommandSender(BetterPrisons::getBetterPrisons()->getServer(), BetterPrisons::getBetterPrisons()->getServer()->getLanguage()), str_replace("{PLAYER}", $sender->getName(), $command));
