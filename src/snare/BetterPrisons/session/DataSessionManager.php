@@ -32,7 +32,7 @@ class DataSessionManager
     {
         $this->dataConnector->executeSelect("data.users.getAll", [], function (array $rows) : void {
             foreach ($rows as $row) {
-                $this->dataSessions[$row["name"]] = new DataSession($row["name"], $row["rank"], $row["prestige"], $row["blocksBroken"]);
+                $this->dataSessions[strtolower($row["name"])] = new DataSession($row["name"], $row["rank"], $row["prestige"], $row["blocksBroken"]);
             }
         });
     }
