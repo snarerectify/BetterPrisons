@@ -55,7 +55,7 @@ class RankupCommand extends Command implements PluginOwned
         }
 
         $prestige = $session->getPrestige();
-        $reduction = $prestige === 0 ? Utils::getRankupPrice($session->getRank()) : Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") * $prestige);
+        $reduction = $prestige === 0 ? Utils::getRankupPrice($session->getRank()) : (Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") * $prestige));
         $newRank = $session->getRank();
         $newRank++;
 
