@@ -28,7 +28,7 @@ class RankupCommand extends Command implements PluginOwned
     public function __construct()
     {
         parent::__construct("rankup", "Rankup command.", null, ["ru"]);
-        $this->setPermission("betterprisons.rankup");
+        $this->setPermission("betterprisons.rankup.command");
     }
 
     /**
@@ -59,7 +59,7 @@ class RankupCommand extends Command implements PluginOwned
         $newRank = $session->getRank();
         $newRank++;
 
-        $sender->sendMessage(str_replace(["{PRICE}", "{RANK}"], [$reduction, $newRank], TextFormat::colorize(BetterPrisons::getBetterPrisons()->getConfig()->get("ranked-up"))));
+        $sender->sendMessage(str_replace(["{PRICE}", "{RANK}"], [$reduction, strtoupper($newRank)], TextFormat::colorize(BetterPrisons::getBetterPrisons()->getConfig()->get("ranked-up"))));
 
         foreach (Utils::getRankupCommands($session->getRank()) as $command) {
             BetterPrisons::getBetterPrisons()->getServer()->dispatchCommand(new ConsoleCommandSender(BetterPrisons::getBetterPrisons()->getServer(), BetterPrisons::getBetterPrisons()->getServer()->getLanguage()), str_replace("{PLAYER}", $sender->getName(), $command));

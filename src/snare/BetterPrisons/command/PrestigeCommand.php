@@ -31,7 +31,7 @@ class PrestigeCommand extends Command implements PluginOwned
     public function __construct()
     {
         parent::__construct("prestige", "Prestige command.");
-        $this->setPermission("betterprisons.prestige");
+        $this->setPermission("betterprisons.prestige.command");
     }
 
     /**
@@ -88,7 +88,6 @@ class PrestigeCommand extends Command implements PluginOwned
 
         $session->setPrestige($newRank);
         $session->setRank("a");
-
 
         Await::f2c(
             function () use($sender, $session) : Generator {

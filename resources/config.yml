@@ -154,10 +154,6 @@ prestige-multiplier: 1.25
 
 world-name: ""
 
-# Enable or disable checking if players can break in mines if they have the required rank, requires MineSystem to function.
-
-mine-crossover: true
-
 # Max prestige, you should not specify any information for this prestige in the section below.
 
 max-prestige: 4

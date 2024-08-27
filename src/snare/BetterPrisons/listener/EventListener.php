@@ -40,38 +40,19 @@ class EventListener implements Listener
      */
     public function onBreak(BlockBreakEvent $event) : void
     {
-        if(BetterPrisons::getBetterPrisons()->getConfig()->get("mine-crossover") === false || BetterPrisons::getBetterPrisons()->getServer()->getPluginManager()->getPlugin("MineSystem") === null) {
-            BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->setBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() + 1);
+        if(!in_array(strtolower($event->getBlock()->getPosition()->getWorld()->getFolderName()), range("a", "z"))) return;
+        if(!$event->isCancelled()) return;
 
-            if(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige() >= BetterPrisons::getBetterPrisons()->getConfig()->get("max-prestige")) {
-                $required = "Prestige";
-            } else {
-                $required = (Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken()) > 0 ? Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() : 0;
-            }
+        BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->setBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() + 1);
 
-            $ev = new PlayerTagUpdateEvent($event->getPlayer(), new ScoreTag("scorehudx.prisonrequiredblocks", (string)$required));
-            $ev->call();
-            return;
-        }
-
-        if(($zone = Main::getInstance()->zoneManager->getZoneByPosition($event->getBlock()->getPosition())) === null) return;
-        if(!in_array(strtolower($zone->getName()), range("a", "z"))) return;
-
-        if(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getRank() < strtolower($zone->getName()) && !$event->getPlayer()->hasPermission("betterprisons.bypass")) {
-            $event->cancel();
-            $event->getPlayer()->sendMessage(TextFormat::colorize(BetterPrisons::getBetterPrisons()->getConfig()->get("not-correct-rank")));
+        if(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige() >= BetterPrisons::getBetterPrisons()->getConfig()->get("max-prestige")) {
+            $required = "Prestige";
         } else {
-            BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->setBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() + 1);
-
-            if(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige() >= BetterPrisons::getBetterPrisons()->getConfig()->get("max-prestige")) {
-                $required = "Prestige";
-            } else {
-                $required = (Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken()) > 0 ? Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() : 0;
-            }
-
-            $ev = new PlayerTagUpdateEvent($event->getPlayer(), new ScoreTag("scorehudx.prisonrequiredblocks", (string)$required));
-            $ev->call();
+            $required = (Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken()) > 0 ? Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() : 0;
         }
+
+        $ev = new PlayerTagUpdateEvent($event->getPlayer(), new ScoreTag("scorehudx.prisonrequiredblocks", (string)$required));
+        $ev->call();
     }
 
     /**
@@ -100,7 +81,7 @@ class EventListener implements Listener
 
         switch ($tag->getName()) {
             case "scorehudx.prisonrank":
-                $tag->setValue($session->getRank());
+                $tag->setValue(strtoupper($session->getRank()));
             break;
 
             case "scorehudx.prisonprestige":
@@ -145,8 +126,6 @@ class EventListener implements Listener
             $requiredRank = ($rankupAmount - GlobalCache::ONLINE()->get($player)->amount) > 0 ? ($rankupAmount - GlobalCache::ONLINE()->get($player)->amount) : 0;
             $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount) > 0 ? (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount) : 0;
         }
-
-        var_dump($requiredRank, $requiredPrestige);
 
         $ev = new PlayerTagsUpdateEvent(Server::getInstance()->getPlayerExact($player), [new ScoreTag("scorehudx.prisonrequiredrank", (string)$requiredRank), new ScoreTag("scorehudx.prisonrequiredprestige", (string)$requiredPrestige)]);
         $ev->call();

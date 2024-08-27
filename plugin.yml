@@ -9,13 +9,10 @@ depend:
 
 softdepend:
   - RankSystem
-  - MineSystem
   - ScoreHud
 
 permissions:
-  betterprisons.rankup:
+  betterprisons.rankup.command:
     default: true
-  betterprisons.prestige:
+  betterprisons.prestige.command:
     default: true
-  betterprisons.bypass:
-    default: op
