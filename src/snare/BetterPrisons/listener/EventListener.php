@@ -69,7 +69,7 @@ class EventListener implements Listener
                 $required = (Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken()) > 0 ? Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() : 0;
             }
 
-            $ev = new PlayerTagUpdateEvent($event->getPlayer(), new ScoreTag("scorehudx.prisonrequiredblocks", $required));
+            $ev = new PlayerTagUpdateEvent($event->getPlayer(), new ScoreTag("scorehudx.prisonrequiredblocks", (string)$required));
             $ev->call();
         }
     }
