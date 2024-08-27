@@ -1,6 +1,6 @@
 # BetterPrisons
 
-Advanced prisons plugin for Pocketmine-MP..
+Advanced prisons plugin for Pocketmine-MP.
 
 ## Features
  - Ranking up and prestiging system.
@@ -48,15 +48,23 @@ $instance = BetterPrisons::getBetterPrisons();
 
 Various methods can be found below:
 ```php
-$instance->getBragItems(); // returns an array with player name as key, Item instance as value.
+$manager = $instance->getDataSessionManager();
 
-$instance->isBragging(Player $player); // returns true or false depending on whether or not the specified player is bragging.
+$session = $manager->getDataSession(string $name);
 
-$instance->startBragging(Player $player); // causes the specified player to brag about the item in their hand.
+$rank = $session->getRank();
 
-$instance->stopBragging(Player $player); // returns true if able to stop playing bragging, false if not.
+$prestige = $session->getPrestige();
 
-$instance->getBraggingItem(Player $player); // returns Item instance if player is bragging, null if not.
+$blocksBroken = $session->getBlocksBroken();
 ```
+
+## Setup
+ - If you wish to use the block requirement per prestige feature, ensure all world names which you wish block breaking to count towards the target 
+ are named solely as a single letter, I.E: Mine E is in the world 'e'.
+ - If the ScoreHud bugs out, restart your server, currently I do not understand why this occurs.
+
+## Support
+Reach out on discord `snare_gale` if having any issues or if you need help with configuration.
 
              
