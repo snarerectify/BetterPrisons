@@ -44,7 +44,7 @@ class EventListener implements Listener
             BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->setBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() + 1);
 
             if(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige() >= BetterPrisons::getBetterPrisons()->getConfig()->get("max-prestige")) {
-                $required = "N/A";
+                $required = "Prestige";
             } else {
                 $required = (Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken()) > 0 ? Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() : 0;
             }
@@ -64,7 +64,7 @@ class EventListener implements Listener
             BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->setBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() + 1);
 
             if(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige() >= BetterPrisons::getBetterPrisons()->getConfig()->get("max-prestige")) {
-                $required = "N/A";
+                $required = "Prestige";
             } else {
                 $required = (Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken()) > 0 ? Utils::getRequiredBlocksBroken(BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getPrestige()) - BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($event->getPlayer()->getName())->getBlocksBroken() : 0;
             }
@@ -93,7 +93,7 @@ class EventListener implements Listener
             $requiredBlocks = (Utils::getRequiredBlocksBroken($session->getPrestige()) - $session->getBlocksBroken()) > 0 ? (Utils::getRequiredBlocksBroken($session->getPrestige()) - $session->getBlocksBroken()) : 0;
         } else {
             $requiredBlocks = (Utils::getRequiredBlocksBroken($session->getPrestige()) - $session->getBlocksBroken()) > 0 ? (Utils::getRequiredBlocksBroken($session->getPrestige()) - $session->getBlocksBroken()) : 0;
-            $rankupAmount = $session->getPrestige() === 0 ? Utils::getRankupPrice($session->getRank()) : (Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") ^ $session->getPrestige()));
+            $rankupAmount = $session->getPrestige() === 0 ? Utils::getRankupPrice($session->getRank()) : (Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") * $session->getPrestige()));
             $requiredRank = ($rankupAmount - GlobalCache::ONLINE()->get($event->getPlayer()->getName())->amount) > 0 ? ($rankupAmount - GlobalCache::ONLINE()->get($event->getPlayer()->getName())->amount) : 0;
             $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($event->getPlayer()->getName())->amount) > 0 ? (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($event->getPlayer()->getName())->amount) : 0;
         }
@@ -141,13 +141,10 @@ class EventListener implements Listener
             $requiredRank = "Prestige";
             $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount) > 0 ? (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount) : 0;
         } else {
-            $rankupAmount = $session->getPrestige() === 0 ? Utils::getRankupPrice($session->getRank()) : (Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") ^ $session->getPrestige()));
+            $rankupAmount = $session->getPrestige() === 0 ? Utils::getRankupPrice($session->getRank()) : (Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") * $session->getPrestige()));
             $requiredRank = ($rankupAmount - GlobalCache::ONLINE()->get($player)->amount) > 0 ? ($rankupAmount - GlobalCache::ONLINE()->get($player)->amount) : 0;
             $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount) > 0 ? (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount) : 0;
         }
-
-        var_dump($requiredRank);
-        var_dump($requiredPrestige);
 
         $ev = new PlayerTagsUpdateEvent(Server::getInstance()->getPlayerExact($player), [new ScoreTag("scorehudx.prisonrequiredrank", (string)$requiredRank), new ScoreTag("scorehudx.prisonrequiredprestige", (string)$requiredPrestige)]);
         $ev->call();

@@ -146,7 +146,7 @@ ranks:
     removed-permissions: []
     commands: []
 
-# Rankup prices multiplied by this amount and then put to the power of the prestige you are at (0 is considered 1).
+# Rankup prices multiplied by this amount and then multiplied by the prestige of the player.
 
 prestige-multiplier: 1.25
 
