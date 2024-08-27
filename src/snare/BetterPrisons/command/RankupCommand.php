@@ -48,14 +48,14 @@ class RankupCommand extends Command implements PluginOwned
         }
 
         $entry = GlobalCache::ONLINE()->get($sender->getName());
+        $prestige = $session->getPrestige();
+        $reduction = $prestige === 0 ? Utils::getRankupPrice($session->getRank()) : (Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") * $prestige));
 
-        if($entry->amount < Utils::getRankupPrice($session->getRank())) {
-            $sender->sendMessage(str_replace("{PRICE}", Utils::getRankupPrice($session->getRank()), TextFormat::colorize(BetterPrisons::getBetterPrisons()->getConfig()->get("insufficient-rankup"))));
+        if($entry->amount < $reduction) {
+            $sender->sendMessage(str_replace("{PRICE}", $reduction, TextFormat::colorize(BetterPrisons::getBetterPrisons()->getConfig()->get("insufficient-rankup"))));
             return false;
         }
 
-        $prestige = $session->getPrestige();
-        $reduction = $prestige === 0 ? Utils::getRankupPrice($session->getRank()) : (Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") * $prestige));
         $newRank = $session->getRank();
         $newRank++;
 
