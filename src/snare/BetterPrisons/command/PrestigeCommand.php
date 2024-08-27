@@ -67,19 +67,6 @@ class PrestigeCommand extends Command implements PluginOwned
             return false;
         }
 
-        Await::f2c(
-            function () use($sender, $session) : Generator {
-                try {
-                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), Utils::getPrestigePrice($session->getPrestige()), 1);
-                } catch (RecordNotFoundException) {
-                    BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_ACCOUNT_NONEXISTENT));
-                } catch(SQLException $exception) {
-                    BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_DATABASE));
-                    BetterPrisons::getBetterPrisons()->getLogger()->logException($exception);
-                }
-            }
-        );
-
         $newRank = $session->getPrestige();
         $newRank++;
 
@@ -101,6 +88,20 @@ class PrestigeCommand extends Command implements PluginOwned
 
         $session->setPrestige($newRank);
         $session->setRank("a");
+
+
+        Await::f2c(
+            function () use($sender, $session) : Generator {
+                try {
+                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), Utils::getPrestigePrice($session->getPrestige()), 1);
+                } catch (RecordNotFoundException) {
+                    BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_ACCOUNT_NONEXISTENT));
+                } catch(SQLException $exception) {
+                    BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_DATABASE));
+                    BetterPrisons::getBetterPrisons()->getLogger()->logException($exception);
+                }
+            }
+        );
 
         if(BetterPrisons::getBetterPrisons()->getConfig()->get("world-name") === "" || BetterPrisons::getBetterPrisons()->getServer()->getWorldManager()->getWorldByName(BetterPrisons::getBetterPrisons()->getConfig()->get("world-name")) === null) {
             $sender->teleport(BetterPrisons::getBetterPrisons()->getServer()->getWorldManager()->getDefaultWorld()->getSpawnLocation());

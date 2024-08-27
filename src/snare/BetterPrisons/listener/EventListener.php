@@ -132,6 +132,8 @@ class EventListener implements Listener
         $player = $transaction->username;
         $session = BetterPrisons::getBetterPrisons()->getDataSessionManager()->getDataSession($player);
 
+        if($session === null) return;
+
         if($session->getPrestige() >= BetterPrisons::getBetterPrisons()->getConfig()->get("max-prestige")) {
             $requiredPrestige = "N/A";
             $requiredRank = "N/A";

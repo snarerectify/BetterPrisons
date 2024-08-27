@@ -56,20 +56,6 @@ class RankupCommand extends Command implements PluginOwned
 
         $prestige = $session->getPrestige();
         $reduction = $prestige === 0 ? Utils::getRankupPrice($session->getRank()) : Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") ^ $prestige);
-
-        Await::f2c(
-            function () use($sender, $session, $prestige, $reduction) : Generator {
-                try {
-                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), $reduction, 1);
-                } catch (RecordNotFoundException) {
-                    BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_ACCOUNT_NONEXISTENT));
-                } catch(SQLException $exception) {
-                    BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_DATABASE));
-                    BetterPrisons::getBetterPrisons()->getLogger()->logException($exception);
-                }
-            }
-        );
-
         $newRank = $session->getRank();
         $newRank++;
 
@@ -90,6 +76,19 @@ class RankupCommand extends Command implements PluginOwned
         }
 
         $session->setRank($newRank);
+
+        Await::f2c(
+            function () use($sender, $session, $prestige, $reduction) : Generator {
+                try {
+                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), $reduction, 1);
+                } catch (RecordNotFoundException) {
+                    BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_ACCOUNT_NONEXISTENT));
+                } catch(SQLException $exception) {
+                    BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_DATABASE));
+                    BetterPrisons::getBetterPrisons()->getLogger()->logException($exception);
+                }
+            }
+        );
 
         if(BetterPrisons::getBetterPrisons()->getServer()->getPluginManager()->getPlugin("ScoreHud") !== null) {
             $ev = new PlayerTagUpdateEvent($sender, new ScoreTag("scorehudx.prisonrank", strtoupper($newRank)));
