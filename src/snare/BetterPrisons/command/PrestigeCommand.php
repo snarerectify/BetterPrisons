@@ -109,7 +109,7 @@ class PrestigeCommand extends Command implements PluginOwned
         }
 
         if(BetterPrisons::getBetterPrisons()->getServer()->getPluginManager()->getPlugin("ScoreHud") !== null) {
-            $ev = new PlayerTagsUpdateEvent($sender, [new ScoreTag("scorehudx.prisonrank", "A"), new ScoreTag("scorehudx.prisonprestige"), (string)$newRank]);
+            $ev = new PlayerTagsUpdateEvent($sender, [new ScoreTag("scorehudx.prisonrank", "A"), new ScoreTag("scorehudx.prisonprestige", (string)$newRank)]);
             $ev->call();
         }
 
