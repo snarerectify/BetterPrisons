@@ -89,13 +89,13 @@ class EventListener implements Listener
             $requiredRank = "N/A";
         } elseif($session->getRank() === "z") {
             $requiredRank = "Prestige";
-            $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($event->getPlayer()->getName())) > 0 ? Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($event->getPlayer()->getName()) : 0;
+            $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($event->getPlayer()->getName())->amount) > 0 ? Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($event->getPlayer()->getName())->amount : 0;
             $requiredBlocks = (Utils::getRequiredBlocksBroken($session->getPrestige()) - $session->getBlocksBroken()) > 0 ? Utils::getRequiredBlocksBroken($session->getPrestige()) - $session->getBlocksBroken() : 0;
         } else {
             $requiredBlocks = (Utils::getRequiredBlocksBroken($session->getPrestige()) - $session->getBlocksBroken()) > 0 ? Utils::getRequiredBlocksBroken($session->getPrestige()) - $session->getBlocksBroken() : 0;
             $rankupAmount = $session->getPrestige() === 0 ? Utils::getRankupPrice($session->getRank()) : Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") ^ $session->getPrestige());
-            $requiredRank = ($rankupAmount - GlobalCache::ONLINE()->get($event->getPlayer()->getName())) > 0 ? $rankupAmount - GlobalCache::ONLINE()->get($event->getPlayer()->getName()) : 0;
-            $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($event->getPlayer()->getName())) > 0 ? Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($event->getPlayer()->getName()) : 0;
+            $requiredRank = ($rankupAmount - GlobalCache::ONLINE()->get($event->getPlayer()->getName())->amount) > 0 ? $rankupAmount - GlobalCache::ONLINE()->get($event->getPlayer()->getName())->amount : 0;
+            $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($event->getPlayer()->getName())->amount) > 0 ? Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($event->getPlayer()->getName())->amount : 0;
         }
 
         switch ($tag->getName()) {
@@ -121,6 +121,9 @@ class EventListener implements Listener
         }
     }
 
+    /**
+     * @param TransactionSuccessEvent $event
+     */
     public function onMoneyChange(TransactionSuccessEvent $event) : void
     {
         $transaction = $event->transaction;
@@ -134,11 +137,11 @@ class EventListener implements Listener
             $requiredRank = "N/A";
         } elseif($session->getRank() === "z") {
             $requiredRank = "Prestige";
-            $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)) > 0 ? Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player) : 0;
+            $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount) > 0 ? Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount : 0;
         } else {
             $rankupAmount = $session->getPrestige() === 0 ? Utils::getRankupPrice($session->getRank()) : Utils::getRankupPrice($session->getRank()) * (BetterPrisons::getBetterPrisons()->getConfig()->get("prestige-multiplier") ^ $session->getPrestige());
-            $requiredRank = ($rankupAmount - GlobalCache::ONLINE()->get($player)) > 0 ? $rankupAmount - GlobalCache::ONLINE()->get($player) : 0;
-            $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)) > 0 ? Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player) : 0;
+            $requiredRank = ($rankupAmount - GlobalCache::ONLINE()->get($player)->amount) > 0 ? $rankupAmount - GlobalCache::ONLINE()->get($player)->amount : 0;
+            $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount) > 0 ? Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount : 0;
         }
 
         $ev = new PlayerTagsUpdateEvent(Server::getInstance()->getPlayerExact($player), [new ScoreTag("scorehudx.prisonrequiredrank", (string)$requiredRank), new ScoreTag("scorehudx.prisonrequiredprestige", (string)$requiredPrestige)]);

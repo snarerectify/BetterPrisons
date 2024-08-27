@@ -165,25 +165,25 @@ max-prestige: 4
 prestiges:
   0:
     price: 12500000
-    block-requirement: 10
+    blocks-requirement: 10
     added-permissions: []
     removed-permissions: []
     commands: []
   1:
     price: 15000000
-    block-requirement: 10000
+    blocks-requirement: 10000
     added-permissions: []
     removed-permissions: []
     commands: []
   2:
     price: 25000000
-    block-requirement: 12500
+    blocks-requirement: 12500
     added-permissions: []
     removed-permissions: []
     commands: []
   3:
     price: 50000000
-    block-requirement: 20000
+    blocks-requirement: 20000
     added-permissions: []
     removed-permissions: []
     commands: []
