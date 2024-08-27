@@ -80,7 +80,7 @@ class RankupCommand extends Command implements PluginOwned
         Await::f2c(
             function () use($sender, $session, $prestige, $reduction) : Generator {
                 try {
-                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), $reduction, 1);
+                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), $reduction, 0);
                 } catch (RecordNotFoundException) {
                     BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_ACCOUNT_NONEXISTENT));
                 } catch(SQLException $exception) {

@@ -93,7 +93,7 @@ class PrestigeCommand extends Command implements PluginOwned
         Await::f2c(
             function () use($sender, $session) : Generator {
                 try {
-                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), Utils::getPrestigePrice($session->getPrestige()), 1);
+                    yield from BedrockEconomyAPI::ASYNC()->subtract($sender->getXuid(), $sender->getName(), Utils::getPrestigePrice($session->getPrestige()), 0);
                 } catch (RecordNotFoundException) {
                     BetterPrisons::getBetterPrisons()->getLogger()->alert(LanguageManager::getString(KnownMessages::ERROR_ACCOUNT_NONEXISTENT));
                 } catch(SQLException $exception) {

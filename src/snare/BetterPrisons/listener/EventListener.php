@@ -17,7 +17,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
-use pocketmine\world\format\io\LoadedChunkData;
+use cooldogedev\BedrockEconomy\libs\_1bf65e59a1e61f74\cooldogedev\libSQL\exception\SQLException;
 use snare\BetterPrisons\BetterPrisons;
 use snare\BetterPrisons\utils\Utils;
 use Valres\MineSystem\Main;
@@ -145,6 +145,8 @@ class EventListener implements Listener
             $requiredRank = ($rankupAmount - GlobalCache::ONLINE()->get($player)->amount) > 0 ? ($rankupAmount - GlobalCache::ONLINE()->get($player)->amount) : 0;
             $requiredPrestige = (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount) > 0 ? (Utils::getPrestigePrice($session->getPrestige()) - GlobalCache::ONLINE()->get($player)->amount) : 0;
         }
+
+        var_dump($requiredRank, $requiredPrestige);
 
         $ev = new PlayerTagsUpdateEvent(Server::getInstance()->getPlayerExact($player), [new ScoreTag("scorehudx.prisonrequiredrank", (string)$requiredRank), new ScoreTag("scorehudx.prisonrequiredprestige", (string)$requiredPrestige)]);
         $ev->call();
