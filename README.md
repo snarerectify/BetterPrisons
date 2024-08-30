@@ -1,4 +1,5 @@
 [![](https://poggit.pmmp.io/shield.state/BetterPrisons)](https://poggit.pmmp.io/p/BetterPrisons)
+[![](https://poggit.pmmp.io/shield.dl.total/BetterPrisons)](https://poggit.pmmp.io/p/BetterPrisons)
 
 # BetterPrisons
 
